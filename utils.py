@@ -6,6 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 
+plt.style.use('ggplot')
+
 # Most frequent Unigrams
 # https://www.kaggle.com/imdevskp/news-category-classification
 def category_ngram(category, n, df, feature, sub_category):
@@ -116,3 +118,26 @@ def aut_frequency(iterations, authors_name_dic, full_authors_df, max_words):
                     authors_dic[headers].append(0)
 
     return pd.DataFrame.from_dict(authors_dic)
+
+def plot_bars_authors(words_df, authors_df):
+    # Set width of bar
+    barWidth = 0.05
+    plt.figure(figsize = (16, 10), facecolor = None)
+
+    # Set position of bar on X axis
+    r1 = np.arange(words_df.shape[0])
+
+    # Iterate over the headers without authors
+    for name in list(words_df.columns):
+        # Make the plot
+        r1 = [x + barWidth for x in r1]
+        plt.bar(r1, list(words_df[name]), width = barWidth, edgecolor='black', label=name)
+
+    # Add xticks on the middle of the group bars
+    plt.xlabel('Authors', fontweight='bold')
+    plt.ylabel('Words Count', fontweight='bold')
+    plt.xticks([r + 0.2 for r in range(words_df.shape[0])], list(authors_df['authors']))
+
+    # Create legend & Show graphic
+    plt.legend()
+    plt.show()
